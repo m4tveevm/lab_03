@@ -31,9 +31,16 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
-
+    - name: Build and run tests
+      run: |
+          make
+          exit_code=0
+          for size in 5 7 9 11 13 15 17 19; do
+            echo "Running tests for matrix size $size"
+            echo "$size" | ./matrix_generator
+            exit_code=$?
+            if [[ $exit_code -ne 0 ]]; then
+              echo "Program exited with non-zero code: $exit_code"
+              exit 1
+            fi
+          done
