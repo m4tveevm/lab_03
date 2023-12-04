@@ -35,7 +35,7 @@ jobs:
       run: |
           make
           exit_code=0
-          for size in 5 7 9 11 13 15 17 19; do
+          for size in 4 6 8 10 12 14 16 18 20; do
             echo "Running tests for matrix size $size"
             echo "$size" | ./matrix_generator
             exit_code=$?
